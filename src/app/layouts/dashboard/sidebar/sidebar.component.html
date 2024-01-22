@@ -1,0 +1,10 @@
+<mat-drawer-container class="dashboard-container" [hasBackdrop]="false">
+    <mat-drawer class="background-accent" #drawer [mode]="'side'" [opened]="sidenavOpened">MENU PROXIMAMENTE</mat-drawer>
+    <mat-drawer-content>       
+        <app-page-container>
+            <app-default-padding>
+                <app-users></app-users>
+            </app-default-padding>
+        </app-page-container>
+    </mat-drawer-content>
+</mat-drawer-container>
