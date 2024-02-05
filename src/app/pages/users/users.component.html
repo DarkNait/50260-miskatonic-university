@@ -1,8 +1,16 @@
+<app-page-header><span page-title>USUARIOS</span></app-page-header>
+
+<div class="flex justify-content-end mb-3">
+  <button mat-flat-button color="primary" (click)="onCreate()">Nuevo Usuario</button>
+</div>
+
+<!--
 <div class="mb-3">
     <app-user-form (userSubmitted)="onUserSubmitted($event)"></app-user-form>
 </div>
+-->
 
-<table mat-table [dataSource]="students" class="mat-elevation-z8" appTableStriped [tableLength]="students.length" >
+<table mat-table [dataSource]="users" class="mat-elevation-z8" appTableStriped [tableLength]="users.length" >
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   
@@ -11,7 +19,7 @@
       <!-- HEADER -->
       <th mat-header-cell *matHeaderCellDef class="background-accent">No.</th>
       <!-- CELDA -->
-      <td mat-cell *matCellDef="let student">{{ student.id }}</td>
+      <td mat-cell *matCellDef="let user">{{ user.id }}</td>
     </ng-container>
   
     <!-- fullName Column -->
@@ -19,8 +27,8 @@
       <!-- HEADER -->
       <th mat-header-cell *matHeaderCellDef class="background-accent">Nombre completo</th>
       <!-- CELDA -->
-      <td mat-cell *matCellDef="let student">
-        {{ student.firstName + " " + student.lastName }}
+      <td mat-cell *matCellDef="let user">
+        {{ user.firstName + " " + user.lastName }}
       </td>
     </ng-container>
 
@@ -29,8 +37,8 @@
         <!-- HEADER -->
         <th mat-header-cell *matHeaderCellDef class="background-accent">Edad</th>
         <!-- CELDA -->
-        <td mat-cell *matCellDef="let student">
-          {{ student.birthday | age}}
+        <td mat-cell *matCellDef="let user">
+          {{ user.birthday | age}}
         </td>
       </ng-container>    
 
@@ -39,8 +47,8 @@
       <!-- HEADER -->
       <th mat-header-cell *matHeaderCellDef class="background-accent">Correo</th>
       <!-- CELDA -->
-      <td mat-cell *matCellDef="let student">
-        {{ student.email }}
+      <td mat-cell *matCellDef="let user">
+        {{ user.email }}
       </td>
     </ng-container>
   
@@ -49,10 +57,25 @@
       <!-- HEADER -->
       <th mat-header-cell *matHeaderCellDef class="background-accent">Rol</th>
       <!-- CELDA -->
-      <td mat-cell *matCellDef="let student">
-        {{ student.role }}
+      <td mat-cell *matCellDef="let user">
+        {{ user.role }}
       </td>
     </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <!-- HEADER -->
+      <th mat-header-cell *matHeaderCellDef class="background-accent"></th>
+      <!-- CELDA -->
+      <td mat-cell *matCellDef="let user">
+        <button (click)="onEdit(user)" color="accent" mat-icon-button title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="onDeleteUser(user)" mat-icon-button color="warn" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>    
   
     <!-- matHeaderRowDef, matRowDef -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -1,1 +1,9 @@
-<app-dashboard></app-dashboard>
+<!-- MAIN LOADING SPINNER -->
+<div class="app-loading" *ngIf="isMainLoading">
+    <mat-spinner></mat-spinner>
+</div>
+<!-- LOADING SPINNER -->
+
+<div *ngIf=!isMainLoading>
+    <router-outlet></router-outlet>
+</div>

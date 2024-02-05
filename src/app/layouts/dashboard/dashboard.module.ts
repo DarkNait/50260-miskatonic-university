@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
+import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { PageContainerComponent } from './page-container/page-container.component';
-import { SharedModule } from '../../shared/shared.module';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { UsersModule } from '../../pages/users/users.module';
-
-
+import { adminGuard } from '../../core/guards/admin.guard';
+import { authGuard } from '../../core/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -24,12 +19,37 @@ import { UsersModule } from '../../pages/users/users.module';
   imports: [
     CommonModule,
     SharedModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    UsersModule
+    RouterModule.forChild([
+      {
+        // /home
+        path: 'home',
+        canActivate: [authGuard],
+        loadChildren: () =>
+          import('../../pages/home/home.module').then((m) => m.HomeModule),
+      },
+      {
+        // /users
+        path: 'users',
+        canActivate: [adminGuard],
+        loadChildren: () =>
+          import('../../pages/users/users.module').then((m) => m.UsersModule),
+      },
+      {
+        // /courses
+        path: 'courses',
+        canActivate: [adminGuard],
+        loadChildren: () =>
+          import('../../pages/courses/courses.module').then((m) => m.CoursesModule),
+      },      
+      /*{
+        path: 'users/:id',
+        component: UserDetailComponent,
+      },*/
+      /*{
+        path: '**',
+        redirectTo: 'home',
+      },*/
+    ]),
   ],
   exports: [
     DashboardComponent

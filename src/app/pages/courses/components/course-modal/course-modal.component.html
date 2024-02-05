@@ -1,0 +1,43 @@
+<app-default-padding>
+    <app-page-header mat-dialog-title *ngIf="courseForm.value.id.toString().length == 0"><span page-title>NUEVO CURSO</span></app-page-header>
+    <app-page-header mat-dialog-title *ngIf="courseForm.value.id.toString().length > 0"><span page-title>EDICION CURSO</span></app-page-header>
+    <div mat-dialog-content>
+        <form [formGroup]="courseForm" class="grid formgrid">
+            <div class="col-3">
+                <mat-form-field class="w-full">
+                    <mat-label>C&oacute;digo</mat-label>
+                    <input formControlName="id" matInput type="number" [readonly]="isEdition"/>
+                </mat-form-field>
+            </div>            
+            <div class="col-3">
+                <mat-form-field class="w-full">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="name" matInput type="text" />
+                </mat-form-field>
+            </div>
+            <div class="col-3">
+                <mat-form-field class="w-full">
+                    <mat-label>Horas</mat-label>
+                    <input formControlName="hours" matInput type="number" />
+                </mat-form-field>
+            </div>
+            <div class="col-3">
+                <mat-form-field class="w-full">
+                    <mat-label>Modalidad</mat-label>
+                    <mat-select formControlName="modality">
+                    <mat-option *ngFor="let modality of modalities" value="{{modality}}">{{modality}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+        <pre>{{ courseForm.value | json }}</pre>
+    </div>
+    <div mat-dialog-actions class="grid">
+        <div class="col-6 flex justify-content-start">
+            <button mat-dialog-close mat-flat-button color="default" (click)="onClose()">Cancelar</button>
+        </div>        
+        <div class="col-6 flex justify-content-end">
+            <button mat-dialog-close mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        </div>                            
+    </div>
+</app-default-padding>

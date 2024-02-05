@@ -1,9 +1,43 @@
 <mat-drawer-container class="dashboard-container" [hasBackdrop]="false">
-    <mat-drawer class="background-accent" #drawer [mode]="'side'" [opened]="sidenavOpened">MENU PROXIMAMENTE</mat-drawer>
-    <mat-drawer-content>       
+    <mat-drawer class="background-accent" #drawer [mode]="'side'" [opened]="sidenavOpened">
+        <mat-nav-list>
+            <a
+              #homeLink="routerLinkActive"
+              routerLinkActive
+              [activated]="homeLink.isActive"
+              routerLink="home"
+              mat-list-item
+              >Inicio</a
+            >
+            <a
+              #usersLink="routerLinkActive"
+              routerLinkActive
+              [activated]="usersLink.isActive"
+              routerLink="users"
+              mat-list-item
+              >Usuarios</a
+            >
+            <a
+              #coursesLink="routerLinkActive"
+              routerLinkActive
+              [activated]="coursesLink.isActive"
+              routerLink="courses"
+              mat-list-item
+              >Cursos</a
+            >            
+            <a (click)="logout()" mat-list-item>Cerrar sesion</a>
+        </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>   
+        <!-- MAIN LOADING SPINNER -->
+        <div class="page-loading" *ngIf="isLoading">
+            <mat-spinner diameter="70"></mat-spinner>
+        </div>
+        <!-- LOADING SPINNER -->
+
         <app-page-container>
             <app-default-padding>
-                <app-users></app-users>
+                <router-outlet></router-outlet>
             </app-default-padding>
         </app-page-container>
     </mat-drawer-content>

@@ -1,74 +1,133 @@
-import { Component } from '@angular/core';
+import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { User } from './model/user';
+import { ActivatedRoute } from '@angular/router';
+import { LoadingService } from '../../core/services/loading.service';
+import { UsersService } from './users.service';
+import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { UserModalComponent } from './components/user-modal/user-modal.component';
+
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  styleUrl: './users.component.scss',
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'fullName', 'age', 'email', 'role'];
+  displayedColumns: string[] = ['id', 'fullName', 'age', 'email', 'role', 'actions'];
 
-  students : User[] = [
-    {
-      id: 1,
-      firstName: "Roland",
-      lastName: "Banks",
-      birthday: new Date(1981, 9, 5),
-      email: "rbanks@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },    
-    {
-      id: 2,
-      firstName: "Jenny",
-      lastName: "Barnes",
-      birthday: new Date(1986, 6, 7),
-      email: "jbarnes@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },    
-    {
-      id: 3,
-      firstName: "Preston",
-      lastName: "Fairmont",
-      birthday: new Date(1982, 11, 15),
-      email: "pfairmonts@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },    
-    {
-      id: 4,
-      firstName: "Calvin",
-      lastName: "Wright",
-      birthday: new Date(1986, 3, 5),
-      email: "cwright@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },    
-    {
-      id: 5,
-      firstName: "Diana",
-      lastName: "Stanley",
-      birthday: new Date(1999, 8, 12),
-      email: "dstanley@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },    
-    {
-      id: 6,
-      firstName: "Rita",
-      lastName: "Young",
-      birthday: new Date(1992, 10, 16),
-      email: "ryoung@arkhammail.com",
-      password: "123456",
-      role: "STUDENT"
-    },             
-  ]
+  users: User[] = [];
+  roles: string[] = [];
 
-
-  onUserSubmitted(ev: User): void {
-    this.students = [...this.students, { ...ev, id: this.students.length + 1, birthday: new Date(ev.birthday) }];
+  constructor(
+    private route: ActivatedRoute,
+    private loadingService: LoadingService,
+    private usersService: UsersService,
+    public dialog: MatDialog   
+  ) {
+    console.log(this.route.snapshot.queryParams);     
   }
+
+  ngOnInit(): void {
+    this.loadPageData();
+    //setTimeout(()=> this.loadingService.setIsLoading(false), 1500);
+  }
+
+  loadPageData(): void {
+    this.loadingService.setIsLoading(true);
+    forkJoin([
+      this.usersService.getRoles(),
+      this.usersService.getUsers(),
+    ]).subscribe({
+      next: (value) => {
+        this.roles = value[0];
+        this.users = value[1];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+  onCreate(): void {
+    this.dialog
+      .open(UserModalComponent, {
+        enterAnimationDuration: '250ms',
+        exitAnimationDuration: '250ms',
+      })
+      .afterClosed()
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            this.loadingService.setIsLoading(true);
+            this.usersService.createUser(data).subscribe({
+              next: (users) => { 
+                (this.users = [...users] ); 
+              },
+              complete: () => {
+                this.loadingService.setIsLoading(false);
+              },
+            });
+          }
+        }
+      });
+  }
+
+  onEdit(user: User) {
+    this.dialog
+      .open(UserModalComponent, {
+        enterAnimationDuration: '250ms',
+        exitAnimationDuration: '250ms',
+        data: user,
+      })
+      .afterClosed()
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.loadingService.setIsLoading(true);
+            this.usersService
+              .updateUser(result).subscribe({
+                next: (users) => { 
+                  (this.users = [...users] ); 
+                },
+                complete: () => {
+                  this.loadingService.setIsLoading(false);
+                },
+              });
+          }
+        }
+      })
+  }
+
+  /*
+  onUserSubmitted(user: User): void {
+    this.loadingService.setIsLoading(true);
+    user = { ...user, id: new Date().getTime(), birthday: new Date(user.birthday) };
+
+    this.usersService
+      .createUser(user)
+      .subscribe({
+        next: (users) => {
+          this.users = [...users];
+        },
+        complete: () => {
+          this.loadingService.setIsLoading(false);
+        },
+      });
+  }
+  */
+
+  onDeleteUser(user: User): void {
+    this.loadingService.setIsLoading(true);
+    this.usersService.deleteUser(user.id).subscribe({
+      next: (users) => {
+        this.users = [...users];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
 }

@@ -1,0 +1,56 @@
+<!-- MAIN LOADING SPINNER -->
+<div class="page-loading" *ngIf="isLoading">
+    <mat-spinner diameter="70"></mat-spinner>
+</div>
+<!-- LOADING SPINNER -->
+
+<div class="login-container background-primary">
+    <mat-card>
+      <mat-card-header class="mb-2">
+        <mat-card-title>
+          <h1 style="font-size: 1.5rem">Iniciar sesion</h1>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form          
+          [formGroup]="loginForm"
+          class="grid formgrid"
+        >
+          <div class="col-12 mb-3">
+            <mat-form-field class="w-full">
+              <mat-label>Email</mat-label>
+              <input formControlName="email" matInput />
+              <mat-error>
+                {{ loginForm.get("email")?.errors | validationErrors }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 mb-3">
+            <mat-form-field class="w-full">
+              <mat-label>Password</mat-label>
+              <input
+                [type]="revealPassword ? 'text' : 'password'"
+                formControlName="password"
+                matInput
+              />
+              <mat-error>
+                {{ loginForm.get("password")?.errors | validationErrors }}
+              </mat-error>
+              <button
+                (click)="onRevealPassword()"
+                matSuffix
+                mat-icon-button
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <button type="submit" (click)="onSubmit()" class="w-full" mat-flat-button color="primary">
+              Ingresar
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

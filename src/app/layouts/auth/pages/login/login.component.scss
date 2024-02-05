@@ -1,0 +1,22 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-card {
+    color: #1b5e20;
+    background-color: rgb(197, 225, 165);
+}
+
+.page-loading {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.40);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
