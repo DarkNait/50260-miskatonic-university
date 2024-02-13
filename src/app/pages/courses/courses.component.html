@@ -4,7 +4,7 @@
   <button mat-flat-button color="primary" (click)="onCreate()">Nuevo Curso</button>
 </div>
 
-<table mat-table [dataSource]="courses" class="mat-elevation-z8" appTableStriped [tableLength]="courses.length" >
+<table mat-table [dataSource]="courses" class="mat-elevation-z8" [appTableStriped]="courses.length" >
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   

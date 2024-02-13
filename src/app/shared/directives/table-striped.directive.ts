@@ -9,7 +9,7 @@ export interface tableRow {
 })
 export class TableStripedDirective implements OnInit, AfterViewInit, OnChanges {
   @Input()
-  tableLength = 0;
+  appTableStriped = 0;
 
   tableElement: HTMLTableElement = document.createElement('table');
 

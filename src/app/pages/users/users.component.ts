@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
     private usersService: UsersService,
     public dialog: MatDialog   
   ) {
-    console.log(this.route.snapshot.queryParams);     
+    //console.log(this.route.snapshot.queryParams);     
   }
 
   ngOnInit(): void {
