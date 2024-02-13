@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../users.service';
+import { Role } from '../../model/user';
 
 @Component({
   selector: 'app-user-form',
@@ -9,7 +10,7 @@ import { UsersService } from '../../users.service';
 })
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
-  roles: string[] = [];
+  roles: Role[] = [];
 
   @Output()
   userSubmitted = new EventEmitter();

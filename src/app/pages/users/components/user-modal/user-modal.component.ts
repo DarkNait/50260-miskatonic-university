@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../model/user';
+import { Role, User } from '../../model/user';
 import { UsersService } from '../../users.service';
 
 @Component({
@@ -11,8 +11,9 @@ import { UsersService } from '../../users.service';
   providers: [UsersService]
 })
 export class UserModalComponent implements OnInit {
+  userId = 0;
   userForm: FormGroup;
-  roles: string[] = [];
+  roles: Role[] = [];
 
   constructor(    
     private fb: FormBuilder, 
@@ -21,16 +22,16 @@ export class UserModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private editedUser?: User,
     ) {
       this.userForm = this.fb.group({
-        id: this.fb.control(''),
         firstName: this.fb.control('', Validators.required),
         lastName: this.fb.control('', Validators.required),
         birthday: this.fb.control('', Validators.required),
         email: this.fb.control('', [Validators.required, Validators.email]),      
         password: this.fb.control('', Validators.required),
-        role: this.fb.control('', Validators.required),
+        role: this.fb.control(null, Validators.required),
       });
       
       if (editedUser) {
+        this.userId = editedUser.id;
         this.userForm.patchValue(editedUser);
       }
   }
@@ -54,4 +55,8 @@ export class UserModalComponent implements OnInit {
   onClose(): void {
     this.dialogRef.close();   
   }  
+
+  rolesCompare(o1: Role, o2: Role) {
+    return o1.id === o2.id;
+  }
 }

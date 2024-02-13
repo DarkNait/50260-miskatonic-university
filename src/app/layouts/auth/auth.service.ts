@@ -3,7 +3,9 @@ import { LoadingService } from '../../core/services/loading.service';
 import { User } from '../../pages/users/model/user';
 import { Router } from '@angular/router';
 import { AlertService } from '../../core/services/alert.service';
-import { delay, finalize, map, of } from 'rxjs';
+import { Observable, delay, finalize, map, of, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface LoginData {
   email: null | string;
@@ -14,7 +16,7 @@ interface LoginData {
   providedIn: 'root'
 })
 export class AuthService {
-  
+  /*
   private MOCK_USER = {
     id: 50,
     email: 'test@mail.com',
@@ -22,32 +24,44 @@ export class AuthService {
     lastName: 'pruebaApellido',
     birthday: new Date(),
     password: '123456',
-    role: 'ADMIN',
+    role: {id: 'ADMIN', role: 'ADMIN'},
   };  
+  */
 
   authUser: User | null = null;
-
-
+  
   constructor(
     private router: Router,
     private alertService: AlertService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private httpClient: HttpClient
   ) {}
 
-  login(data: LoginData): void {
-    if (
-      data.email === this.MOCK_USER.email &&
-      data.password === this.MOCK_USER.password
-    ) {
-      this.authUser = this.MOCK_USER;
-      localStorage.setItem(
-        'token',
-        'numToken1112222'
+  private setAuthUser(user: User): void {
+    this.authUser = user;
+    localStorage.setItem('token', user.token);
+  }
+
+  login(data: LoginData): Observable<User[]> {
+    this.loadingService.setIsLoading(true);
+
+    return this.httpClient
+      .get<User[]>(
+        `${environment.apiURL}/users?email=${data.email}&password=${data.password}`
+      )
+      .pipe(
+        delay(1000),
+        tap((response) => {
+          if (!!response[0]) {
+            this.setAuthUser(response[0]);
+            this.loadingService.setIsLoading(false);
+            this.router.navigate(['', 'home']);
+          } else {
+            this.loadingService.setIsLoading(false);
+            this.alertService.showError('Email o password invalidos');
+          }
+        })
       );
-      this.router.navigate(['', 'home']);
-    } else {
-      this.alertService.showError('Email o password invalidos');
-    }
   }
 
   logout(): void {
@@ -58,25 +72,24 @@ export class AuthService {
 
   verifyToken() {
     this.loadingService.setIsLoading(true);
-    return of(localStorage.getItem('token')).pipe(
+
+    return this.httpClient
+    .get<User[]>(
+      `${environment.apiURL}/users?token=${localStorage.getItem('token')}`
+    )
+    .pipe(
       delay(1000),
-      map((response) => !!response),
+      map((response) => {
+        if (response.length) {
+          this.setAuthUser(response[0]);
+          return true;
+        } else {
+          this.authUser = null;
+          localStorage.removeItem('token');
+          return false;
+        }
+      }),
       finalize(() => this.loadingService.setIsLoading(false))
     );
-  }
-
-  verifyLoggedUser(): void {
-    this.verifyToken()
-      .subscribe({
-        next: (isAuthenticated) => {
-          if (isAuthenticated) {
-            this.authUser = this.MOCK_USER;
-            this.router.navigate(['', 'home']);
-          }
-        },
-        complete: () => {
-          this.loadingService.setIsLoading(false);
-        },
-      });      
   }
 }

@@ -1,5 +1,5 @@
 import { Component, LOCALE_ID, OnInit } from '@angular/core';
-import { User } from './model/user';
+import { Role, User } from './model/user';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../core/services/loading.service';
 import { UsersService } from './users.service';
@@ -18,7 +18,7 @@ export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullName', 'age', 'email', 'role', 'actions'];
 
   users: User[] = [];
-  roles: string[] = [];
+  roles: Role[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +31,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPageData();
-    //setTimeout(()=> this.loadingService.setIsLoading(false), 1500);
   }
 
   loadPageData(): void {
@@ -85,6 +84,7 @@ export class UsersComponent implements OnInit {
       .subscribe({
         next: (result) => {
           if (result) {
+            result.id = user.id;
             this.loadingService.setIsLoading(true);
             this.usersService
               .updateUser(result).subscribe({

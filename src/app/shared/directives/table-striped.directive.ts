@@ -15,6 +15,7 @@ export class TableStripedDirective implements OnInit, AfterViewInit, OnChanges {
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) { 
     this.tableElement = this.elementRef.nativeElement;
+    console.log(this.tableElement)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,14 +33,19 @@ export class TableStripedDirective implements OnInit, AfterViewInit, OnChanges {
   }
 
   updateTableRows(): void{
+    setTimeout(() => {
     const trElements: NodeListOf<HTMLTableRowElement> = this.tableElement.querySelectorAll('tr');
-    console.log(trElements.length);
+    console.log('se esta llamando update: ' + trElements.length);
     trElements.forEach((el, index) => {
+      this.renderer.addClass(el, 'stripped');
+      /*
       console.log(el, index);
       if(index % 2 != 0) {
         this.renderer.setStyle(el, 'background-color', '#C5E1A5');            
       }
-    }); 
+      */
+    });
+  }) 
   }
 
 }

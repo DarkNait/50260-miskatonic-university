@@ -62,3 +62,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .color-primary { 
   color: white !important;
 }  
+
+.stripped {
+  &:tr:nth-child(even){
+    background-color: #2E7D32 !important; /* green 800 */
+  }
+}

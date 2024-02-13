@@ -1,6 +1,6 @@
 <app-default-padding>
-    <app-page-header mat-dialog-title *ngIf="userForm.value.id.toString().length == 0"><span page-title>NUEVO USUARIO</span></app-page-header>
-    <app-page-header mat-dialog-title *ngIf="userForm.value.id.toString().length > 0"><span page-title>EDICION USUARIO</span></app-page-header>
+    <app-page-header mat-dialog-title *ngIf="userId == 0"><span page-title>NUEVO USUARIO</span></app-page-header>
+    <app-page-header mat-dialog-title *ngIf="userId > 0"><span page-title>EDICION USUARIO</span></app-page-header>
     <div mat-dialog-content>
         <form [formGroup]="userForm" class="grid formgrid">
             <div class="col-6">
@@ -46,8 +46,8 @@
             <div class="col-4">
                 <mat-form-field class="w-full">
                     <mat-label>Rol</mat-label>
-                    <mat-select formControlName="role">
-                    <mat-option *ngFor="let role of roles" value="{{role}}">{{role}}</mat-option>
+                    <mat-select formControlName="role" [compareWith]="rolesCompare">
+                    <mat-option *ngFor="let rol of roles" [value]="rol">{{rol.role}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

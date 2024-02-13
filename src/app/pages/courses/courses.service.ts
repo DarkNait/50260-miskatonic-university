@@ -1,60 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Observable, delay, of, tap } from 'rxjs';
+import { Observable, catchError, delay, mergeMap, of, tap } from 'rxjs';
 import { Course } from './model/course';
 import { AlertService } from '../../core/services/alert.service';
-
-let courses : Course[] = [
-  {
-    id: 10,
-    name: "Análisis Matemático",
-    hours: 96,
-    modality: "Anual"    
-  },    
-  {
-    id: 20,
-    name: "Arquitectura de Computadoras",
-    hours: 96,
-    modality: "Anual"    
-  },  
-  {
-    id: 30,
-    name: "Algoritmos y Estructuras de Datos",
-    hours: 192,
-    modality: "Cuatrimestral"    
-  },             
-]
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class CoursesService {
-  constructor(private alertService: AlertService) { }
+  constructor(private alertService: AlertService, private httpClient: HttpClient) { }
 
   //// COURSES METHODS
 
   getCourseById(id: number | string): Observable<Course | undefined> {
-    return of(courses.find((course) => course.id == id)).pipe(delay(1000));
+    return this.httpClient.get<Course>(`${environment.apiURL}/courses/${id}`);
   }
 
   getCourses() {
-    return of(courses).pipe(delay(1000));
+    return this.httpClient
+      .get<Course[]>(`${environment.apiURL}/courses`)
+      .pipe(
+        catchError((error) => {
+          this.alertService.showError('Error al cargar los cursos');
+          return of([]);
+        })
+      );
   }
 
   createCourse(data: Course) {
-    courses.push(data);
-    return this.getCourses();
+    return this.httpClient
+      .post<Course>(`${environment.apiURL}/courses`, {
+        ...data, id: data.id.toString()
+      })
+      .pipe(mergeMap(() => this.getCourses()));     
   }
 
   updateCourse(data: Course) {
-    courses = courses.map((el) => (el.id === data.id ? { ...el, ...data } : el));
-    return this.getCourses();
+    return this.httpClient.put<Course>(`${environment.apiURL}/courses/${data.id}`, {
+      ...data
+    })
+    .pipe(
+      mergeMap(() => this.getCourses())
+    );   
   }
 
   deleteCourse(id: number) {
-    courses = courses.filter((course) => course.id !== id);
-    return this.getCourses().pipe(
-      tap(() =>
-        this.alertService.showSuccess('Realizado', 'Curso eliminado correctamente')
-      )
-    );
+    return this.httpClient
+      .delete<Course>(`${environment.apiURL}/courses/${id}`)
+      .pipe(
+        tap(() => this.alertService.showSuccess('Realizado', 'Curso eliminado correctamente')),
+        mergeMap(() => this.getCourses())
+      );    
   }
 
   //// END COURSES METHODS

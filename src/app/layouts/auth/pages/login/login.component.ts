@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
 import { LoadingService } from '../../../../core/services/loading.service';
 
 @Component({
@@ -32,7 +31,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.verifyLoggedUser();
+    this.loadingService.setIsLoading(true);
+
+    this.authService.verifyToken().subscribe(
+      {
+        next: (isAuthenticated) => {
+          isAuthenticated ? this.router.navigate(['', 'home']) : null
+        },
+        complete: () => this.loadingService.setIsLoading(false)
+      }
+    );
   }
 
   onRevealPassword(): void{
@@ -43,7 +51,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
     } else {
-      this.authService.login(this.loginForm.value);
+      this.authService.login(this.loginForm.value).subscribe();
     }
   }
 }

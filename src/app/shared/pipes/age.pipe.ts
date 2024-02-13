@@ -26,6 +26,9 @@ export class AgePipe implements PipeTransform {
   transform(value: Date, ...args: unknown[]): unknown {
 
     if(value){
+      if(! (value instanceof Date))
+        value = new Date(value);
+      
       return this.calculateAge(value);
     }
 

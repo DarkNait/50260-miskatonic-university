@@ -1,0 +1,116 @@
+{
+  "roles": [
+    {
+      "id": "ADMIN",
+      "role": "ADMIN"
+    },
+    {
+      "id": "STUDENT",
+      "role": "STUDENT"
+    },
+    {
+      "id": "PROFESSOR",
+      "role": "PROFESSOR"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "firstName": "Roland",
+      "lastName": "Banks",
+      "birthday": "1981-09-05T03:00:00.000Z",
+      "email": "rbanks@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "PROFESSOR",
+        "role": "PROFESSOR"
+      },
+      "token": "sd4eed456t"
+    },
+    {
+      "id": "2",
+      "firstName": "Jenny",
+      "lastName": "Barnes",
+      "birthday": "1986-06-07T03:00:00.000Z",
+      "email": "jbarnes@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "STUDENT",
+        "role": "STUDENT"
+      },
+      "token": "4er61fxg5d"
+    },
+    {
+      "id": "3",
+      "firstName": "Preston",
+      "lastName": "Fairmont",
+      "birthday": "1982-11-15T03:00:00.000Z",
+      "email": "pfairmonts@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "ADMIN",
+        "role": "ADMIN"
+      },
+      "token": "gw06sdf45s"
+    },
+    {
+      "id": "4",
+      "firstName": "Calvin",
+      "lastName": "Wright",
+      "birthday": "1986-03-05T03:00:00.000Z",
+      "email": "cwright@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "STUDENT",
+        "role": "STUDENT"
+      },      
+      "token": "er1qg32af4"
+    },
+    {
+      "id": "5",
+      "firstName": "Diana",
+      "lastName": "Stanley",
+      "birthday": "1999-08-12T03:00:00.000Z",
+      "email": "dstanley@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "STUDENT",
+        "role": "STUDENT"
+      },
+      "token": "2wt3asd4tf"
+    },
+    {
+      "id": "6",
+      "firstName": "Rita",
+      "lastName": "Young",
+      "birthday": "1996-10-16T03:00:00.000Z",
+      "email": "ryoung@arkhammail.com",
+      "password": "123456",
+      "role": {
+        "id": "PROFESSOR",
+        "role": "PROFESSOR"
+      },
+      "token": "xzc24era1s"
+    }
+  ],
+  "courses": [
+    {
+      "id": "10",
+      "name": "Análisis Matemático",
+      "hours": 96,
+      "modality": "Anual"
+    },
+    {
+      "id": "20",
+      "name": "Arquitectura de Computadoras",
+      "hours": 96,
+      "modality": "Anual"
+    },
+    {
+      "id": "30",
+      "name": "Algoritmos y Estructuras de Datos",
+      "hours": 192,
+      "modality": "Cuatrimestral"
+    }
+  ]
+}
