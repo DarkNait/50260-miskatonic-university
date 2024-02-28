@@ -1,11 +1,13 @@
-import { Component, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { Role, User } from './model/user';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../core/services/loading.service';
 import { UsersService } from './users.service';
-import { forkJoin } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserModalComponent } from './components/user-modal/user-modal.component';
+import { Store } from '@ngrx/store';
+import { selectAuthUser } from '../../core/store/auth/selectors/selectors';
 
 
 @Component({
@@ -13,7 +15,11 @@ import { UserModalComponent } from './components/user-modal/user-modal.component
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
+
+  isAdminUser: boolean = false;
+  authUserSubscription?: Subscription;
+  sidebarOpened : boolean = true;
 
   displayedColumns: string[] = ['id', 'fullName', 'age', 'email', 'role', 'actions'];
 
@@ -24,9 +30,17 @@ export class UsersComponent implements OnInit {
     private route: ActivatedRoute,
     private loadingService: LoadingService,
     private usersService: UsersService,
-    public dialog: MatDialog   
+    private store: Store,
+    public dialog: MatDialog,
   ) {
-    //console.log(this.route.snapshot.queryParams);     
+    //console.log(this.route.snapshot.queryParams);       
+    this.authUserSubscription = this.store
+       .select(selectAuthUser)
+       .subscribe({
+         next: (value) => {
+           this.isAdminUser = value?.role.role === 'ADMIN';
+         },
+       });
   }
 
   ngOnInit(): void {
@@ -85,6 +99,8 @@ export class UsersComponent implements OnInit {
         next: (result) => {
           if (result) {
             result.id = user.id;
+            result.token = user.token;
+            
             this.loadingService.setIsLoading(true);
             this.usersService
               .updateUser(result).subscribe({
@@ -128,6 +144,10 @@ export class UsersComponent implements OnInit {
         this.loadingService.setIsLoading(false);
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authUserSubscription?.unsubscribe();
   }
 
 }

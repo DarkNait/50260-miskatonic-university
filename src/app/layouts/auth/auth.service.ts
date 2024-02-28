@@ -3,9 +3,11 @@ import { LoadingService } from '../../core/services/loading.service';
 import { User } from '../../pages/users/model/user';
 import { Router } from '@angular/router';
 import { AlertService } from '../../core/services/alert.service';
-import { Observable, delay, finalize, map, of, tap } from 'rxjs';
+import { Observable, catchError, delay, finalize, map, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Store } from '@ngrx/store';
+import { authActions } from '../../core/store/auth/actions/actions';
 
 interface LoginData {
   email: null | string;
@@ -16,17 +18,6 @@ interface LoginData {
   providedIn: 'root'
 })
 export class AuthService {
-  /*
-  private MOCK_USER = {
-    id: 50,
-    email: 'test@mail.com',
-    firstName: 'pruebaNombre',
-    lastName: 'pruebaApellido',
-    birthday: new Date(),
-    password: '123456',
-    role: {id: 'ADMIN', role: 'ADMIN'},
-  };  
-  */
 
   authUser: User | null = null;
   
@@ -34,11 +25,13 @@ export class AuthService {
     private router: Router,
     private alertService: AlertService,
     private loadingService: LoadingService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private store: Store
   ) {}
 
   private setAuthUser(user: User): void {
     this.authUser = user;
+    this.store.dispatch(authActions.setAuthUser( { user }))
     localStorage.setItem('token', user.token);
   }
 
@@ -66,6 +59,7 @@ export class AuthService {
 
   logout(): void {
     this.authUser = null;
+    this.store.dispatch(authActions.logout());
     this.router.navigate(['auth', 'login']);
     localStorage.removeItem('token');
   }
@@ -85,10 +79,12 @@ export class AuthService {
           return true;
         } else {
           this.authUser = null;
+          this.store.dispatch(authActions.logout());
           localStorage.removeItem('token');
           return false;
         }
       }),
+      catchError(() => of(false)),
       finalize(() => this.loadingService.setIsLoading(false))
     );
   }

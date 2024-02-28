@@ -54,7 +54,6 @@
       "token": "gw06sdf45s"
     },
     {
-      "id": "4",
       "firstName": "Calvin",
       "lastName": "Wright",
       "birthday": "1986-03-05T03:00:00.000Z",
@@ -64,7 +63,8 @@
         "id": "STUDENT",
         "role": "STUDENT"
       },
-      "token": "er1qg32af4"
+      "id": "4",
+      "token": "hw0podf45s"
     },
     {
       "id": "5",
@@ -112,5 +112,22 @@
       "hours": 192,
       "modality": "Cuatrimestral"
     }
+  ],
+  "inscriptions": [
+    {
+      "id": "1",
+      "userId": "2",
+      "courseId": "20"
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "courseId": "30"
+    },    
+    {
+      "id": "3",
+      "userId": "5",
+      "courseId": "30"
+    }    
   ]
 }

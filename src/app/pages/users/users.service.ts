@@ -5,67 +5,6 @@ import { AlertService } from '../../core/services/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-/*
-let roles: string[] = ['ADMIN', 'STUDENT', 'PROFESSOR'];
-
-let users : User[] = [
-  {
-    id: 1,
-    firstName: "Roland",
-    lastName: "Banks",
-    birthday: new Date(1981, 9, 5),
-    email: "rbanks@arkhammail.com",
-    password: "123456",
-    role: "PROFESSOR"
-  },    
-  {
-    id: 2,
-    firstName: "Jenny",
-    lastName: "Barnes",
-    birthday: new Date(1986, 6, 7),
-    email: "jbarnes@arkhammail.com",
-    password: "123456",
-    role: "STUDENT"
-  },    
-  {
-    id: 3,
-    firstName: "Preston",
-    lastName: "Fairmont",
-    birthday: new Date(1982, 11, 15),
-    email: "pfairmonts@arkhammail.com",
-    password: "123456",
-    role: "ADMIN"
-  },    
-  {
-    id: 4,
-    firstName: "Calvin",
-    lastName: "Wright",
-    birthday: new Date(1986, 3, 5),
-    email: "cwright@arkhammail.com",
-    password: "123456",
-    role: "STUDENT"
-  },    
-  {
-    id: 5,
-    firstName: "Diana",
-    lastName: "Stanley",
-    birthday: new Date(1999, 8, 12),
-    email: "dstanley@arkhammail.com",
-    password: "123456",
-    role: "STUDENT"
-  },    
-  {
-    id: 6,
-    firstName: "Rita",
-    lastName: "Young",
-    birthday: new Date(1992, 10, 16),
-    email: "ryoung@arkhammail.com",
-    password: "123456",
-    role: "PROFESSOR"
-  },             
-]
-*/
-
 @Injectable()
 export class UsersService {
 

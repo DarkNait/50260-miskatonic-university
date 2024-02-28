@@ -7,4 +7,11 @@
     </button>
     <span>Miskatonic University</span>
     <span class="toolbar-spacer"></span>
+    <div class="toolbar-user" *ngIf="authUser$ | async; let user">
+      <mat-icon>account_circle</mat-icon>
+      <div class="pl-2">
+        <span>{{ user.firstName }} {{ user.lastName }}</span>
+        <p class="m-0">{{ user.email }}</p>
+      </div>
+    </div>
 </mat-toolbar>

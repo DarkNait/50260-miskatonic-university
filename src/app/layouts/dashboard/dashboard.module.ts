@@ -30,17 +30,24 @@ import { authGuard } from '../../core/guards/auth.guard';
       {
         // /users
         path: 'users',
-        canActivate: [adminGuard],
+        canActivate: [authGuard],
         loadChildren: () =>
           import('../../pages/users/users.module').then((m) => m.UsersModule),
       },
       {
         // /courses
         path: 'courses',
-        canActivate: [adminGuard],
+        canActivate: [authGuard, adminGuard],
         loadChildren: () =>
           import('../../pages/courses/courses.module').then((m) => m.CoursesModule),
-      },      
+      }, 
+      {
+        // /inscriptions
+        path: 'inscriptions',
+        canActivate: [authGuard, adminGuard],
+        loadChildren: () =>
+          import('../../pages/inscriptions/inscriptions.module').then((m) => m.InscriptionsModule),
+      },            
       /*{
         path: 'users/:id',
         component: UserDetailComponent,
