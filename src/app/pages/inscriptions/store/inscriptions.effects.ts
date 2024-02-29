@@ -9,7 +9,7 @@ import { InscriptionsService } from '../inscriptions.service';
 @Injectable()
 export class InscriptionsEffects {
 
-  loadInscriptionss$ = createEffect(() => {
+  loadInscriptions$ = createEffect(() => {
     return this.actions$.pipe(
 
       ofType(InscriptionsActions.loadInscriptions),
@@ -21,6 +21,62 @@ export class InscriptionsEffects {
     );
   });
 
+  createInscription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.createInscription),
+      concatMap((action) => {
+        return this.inscriptionsService.createInscription(action.data).pipe(
+          map((resp) => InscriptionsActions.createInscriptionSuccess({ data: resp })),
+          catchError((error) => of(InscriptionsActions.createInscriptionFailure({ error })))
+        );
+      })
+    );
+  });
+
+  createInscriptionSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.createInscriptionSuccess),
+      map(() => InscriptionsActions.loadInscriptions())
+    );
+  });
+
+  updateInscription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.updateInscription),
+      concatMap((action) => {
+        return this.inscriptionsService.updateInscription(action.data).pipe(
+          map((resp) => InscriptionsActions.updateInscriptionSuccess({ data: resp })),
+          catchError((error) => of(InscriptionsActions.updateInscriptionFailure({ error })))
+        );
+      })
+    );
+  });
+
+  updateInscriptionSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.updateInscriptionSuccess),
+      map(() => InscriptionsActions.loadInscriptions())
+    );
+  });
+
+  deleteInscription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.deleteInscription),
+      concatMap((action) => {
+        return this.inscriptionsService.deleteInscription(action.id).pipe(
+          map((resp) => InscriptionsActions.deleteInscriptionSuccess({ data: resp })),
+          catchError((error) => of(InscriptionsActions.deleteInscriptionFailure({ error })))
+        );
+      })
+    );
+  });
+
+  deleteInscriptionSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(InscriptionsActions.deleteInscriptionSuccess),
+      map(() => InscriptionsActions.loadInscriptions())
+    );
+  });
 
   constructor(private actions$: Actions, private inscriptionsService: InscriptionsService) {}
 }

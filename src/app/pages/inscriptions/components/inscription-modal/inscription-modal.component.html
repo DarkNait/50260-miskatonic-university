@@ -1,0 +1,32 @@
+<app-default-padding>
+    <app-page-header mat-dialog-title *ngIf="inscriptionId.length == 0"><span page-title>NUEVO INSCRIPCION</span></app-page-header>
+    <app-page-header mat-dialog-title *ngIf="inscriptionId.length > 0"><span page-title>EDITAR INSCRIPCION</span></app-page-header>
+    <div mat-dialog-content>
+        <form [formGroup]="inscriptionForm" class="grid formgrid">
+            <div class="col-6">
+                <mat-form-field class="w-full">
+                    <mat-label>Usuario</mat-label>
+                    <mat-select formControlName="userId">
+                        <mat-option *ngFor="let user of users" [value]="user.id">{{user.firstName}} {{user.lastName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <mat-form-field class="w-full">
+                    <mat-label>Curso</mat-label>
+                    <mat-select formControlName="courseId">
+                        <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>            
+        </form>
+    </div>
+    <div mat-dialog-actions class="grid">
+        <div class="col-6 flex justify-content-start">
+            <button mat-dialog-close mat-flat-button color="default" (click)="onClose()">Cancelar</button>
+        </div>        
+        <div class="col-6 flex justify-content-end">
+            <button mat-dialog-close mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        </div>                            
+    </div>
+</app-default-padding>

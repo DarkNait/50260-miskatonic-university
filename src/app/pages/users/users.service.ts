@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Role, User } from './model/user';
-import { Observable, catchError, delay, mergeMap, of, tap } from 'rxjs';
+import { Observable, catchError, delay, map, mergeMap, of, tap } from 'rxjs';
 import { AlertService } from '../../core/services/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -79,6 +79,21 @@ export class UsersService {
         tap(() => this.alertService.showSuccess('Realizado', 'Usuario eliminado correctamente')),
         mergeMap(() => this.getUsers())
       );    
+  }
+
+  getUsersByRole(role: string) {
+    //return of(users).pipe(delay(1000));
+    return this.httpClient
+      .get<User[]>(`${environment.apiURL}/users`)
+      .pipe(
+        map((users) => {
+          return users.filter((el) => el.role.id.toLowerCase() === role.toLowerCase());
+        }),
+        catchError((error) => {
+          this.alertService.showError('Error al cargar los usuarios');
+          return of([]);
+        })
+      );
   }
 
   //// END USERS METHODS

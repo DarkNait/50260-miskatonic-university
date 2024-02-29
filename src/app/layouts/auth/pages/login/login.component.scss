@@ -3,6 +3,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+    margin: 0px auto 30px;
+    background-image: url('../../../../../assets/img/logo.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 0.8;
 }
 
 mat-card {

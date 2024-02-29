@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { InscriptionsActions } from './inscriptions.actions';
-import { Inscription } from '../model/inscription';
+import { Inscription } from '../models/inscription';
 
 export const inscriptionsFeatureKey = 'inscriptions';
 

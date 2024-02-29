@@ -3,9 +3,11 @@ import { Store } from '@ngrx/store';
 import { InscriptionsActions } from './store/inscriptions.actions';
 import { selectInscriptions, selectInscriptionsIsLoading } from './store/inscriptions.selectors';
 import { Observable, Subscription } from 'rxjs';
-import { Inscription } from './model/inscription';
+import { Inscription } from './models/inscription';
 import { selectAuthUser } from '../../core/store/auth/selectors/selectors';
 import { LoadingService } from '../../core/services/loading.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InscriptionModalComponent } from './components/inscription-modal/inscription-modal.component';
 
 @Component({
   selector: 'app-inscriptions',
@@ -21,7 +23,7 @@ export class InscriptionsComponent implements OnDestroy {
 
   displayedColumns: string[] = ['id', 'user', 'course', 'role', 'actions'];
 
-  constructor(private loadingService: LoadingService, private store: Store){    
+  constructor(private loadingService: LoadingService, private store: Store, private matDialog: MatDialog) {    
     //this.isLoading$ = this.store.select(selectInscriptionsIsLoading);
     this.loadingService.setIsLoading(true);
 
@@ -58,75 +60,25 @@ export class InscriptionsComponent implements OnDestroy {
     this.store.dispatch(InscriptionsActions.loadInscriptions());
   }
 
-  onCreate(): void {
-    /*
-    this.dialog
-      .open(UserModalComponent, {
+  onCreate(): void {    
+    this.matDialog
+      .open(InscriptionModalComponent, {
         enterAnimationDuration: '250ms',
         exitAnimationDuration: '250ms',
-      })
-      .afterClosed()
-      .subscribe({
-        next: (data) => {
-          if (data) {
-            this.loadingService.setIsLoading(true);
-            this.usersService.createUser(data).subscribe({
-              next: (users) => { 
-                (this.users = [...users] ); 
-              },
-              complete: () => {
-                this.loadingService.setIsLoading(false);
-              },
-            });
-          }
-        }
-      });
-    */
+      });            
   }
 
   onEdit(inscription: Inscription) {
-    /*
-    this.dialog
-      .open(UserModalComponent, {
+    this.matDialog
+      .open(InscriptionModalComponent, {
         enterAnimationDuration: '250ms',
         exitAnimationDuration: '250ms',
-        data: user,
-      })
-      .afterClosed()
-      .subscribe({
-        next: (result) => {
-          if (result) {
-            result.id = user.id;
-            result.token = user.token;
-            
-            this.loadingService.setIsLoading(true);
-            this.usersService
-              .updateUser(result).subscribe({
-                next: (users) => { 
-                  (this.users = [...users] ); 
-                },
-                complete: () => {
-                  this.loadingService.setIsLoading(false);
-                },
-              });
-          }
-        }
-      })
-      */
+        data: inscription,
+      });
   }
 
   onDelete(inscription: Inscription): void {
-    /*
-    this.loadingService.setIsLoading(true);
-    this.usersService.deleteUser(user.id).subscribe({
-      next: (users) => {
-        this.users = [...users];
-      },
-      complete: () => {
-        this.loadingService.setIsLoading(false);
-      },
-    });
-    */
+    this.store.dispatch(InscriptionsActions.deleteInscription({ id: inscription.id }) );
   }
 
   ngOnDestroy(): void {
