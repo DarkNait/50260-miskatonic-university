@@ -21,6 +21,19 @@ export class InscriptionsEffects {
     );
   });
 
+  loadInscriptionsByUserId$ = createEffect(() => {
+    return this.actions$.pipe(
+
+      ofType(InscriptionsActions.loadInscriptionsByUserId),
+      concatMap((action) => 
+        { return this.inscriptionsService.getInscriptionsByUserId(action.id).pipe(
+          map((resp) => InscriptionsActions.loadInscriptionsByUserIdSuccess({ data: resp })),
+          catchError(error => of(InscriptionsActions.loadInscriptionsByUserIdFailure({ error })))
+        )}        
+      )
+    );
+  });
+
   createInscription$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(InscriptionsActions.createInscription),

@@ -15,6 +15,9 @@ export const InscriptionsActions = createActionGroup({
     'Update Inscription Failure': props<{ error: unknown }>(),    
     'Delete Inscription':props<{ id: string | number }>(),
     'Delete Inscription Success': props<{ data: Inscription }>(),
-    'Delete Inscription Failure': props<{ error: unknown }>(),     
+    'Delete Inscription Failure': props<{ error: unknown }>(),  
+    'Load Inscriptions By UserId': props<{ id: string | number }>(),
+    'Load Inscriptions By UserId Success': props<{ data: Inscription[] }>(),
+    'Load Inscriptions By UserId Failure': props<{ error: unknown }>(),       
   }
 });

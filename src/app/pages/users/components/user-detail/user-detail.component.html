@@ -1,0 +1,20 @@
+<div class="user-detail-container">
+    <mat-card>
+      <mat-card-header class="mb-2">
+        <mat-card-title>
+          <h1 style="font-size: 1.5rem">Usuario {{user?.firstName}} {{user?.lastName}}</h1>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div>Email: {{user?.email}}</div>
+        <div>Nacimiento: {{user?.birthday | date: 'longDate'}}</div>
+        <div>Rol: {{user?.role?.role}}</div>
+        <div>
+            <h4>Inscripciones:</h4>
+            <div *ngFor="let elem of inscriptions$ | async"> 
+                <div>Curso: {{ elem.course?.name }} - Modalidad: {{ elem.course?.modality }}</div>
+            </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+</div>

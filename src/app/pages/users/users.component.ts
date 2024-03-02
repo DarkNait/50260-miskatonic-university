@@ -17,6 +17,7 @@ import { selectAuthUser } from '../../core/store/auth/selectors/selectors';
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
+  loggedUser: User | null = null;
   isAdminUser: boolean = false;
   authUserSubscription?: Subscription;
   sidebarOpened : boolean = true;
@@ -38,7 +39,8 @@ export class UsersComponent implements OnInit, OnDestroy {
        .select(selectAuthUser)
        .subscribe({
          next: (value) => {
-           this.isAdminUser = value?.role.role === 'ADMIN';
+            this.loggedUser = value;
+            this.isAdminUser = this.loggedUser?.role.role === 'ADMIN';
          },
        });
   }

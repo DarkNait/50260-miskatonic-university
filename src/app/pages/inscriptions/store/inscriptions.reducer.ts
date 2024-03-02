@@ -25,6 +25,13 @@ export const reducer = createReducer(
   on(InscriptionsActions.loadInscriptionsFailure, (state, action) => (
     { ...state, loading: false, error: action.error }
   )),
+  on(InscriptionsActions.loadInscriptionsByUserId, (state) => ({ ...state, loading: true })),
+  on(InscriptionsActions.loadInscriptionsByUserIdSuccess, (state, action) => (
+    { ...state, loading: false, inscriptions: action.data }
+  )),
+  on(InscriptionsActions.loadInscriptionsByUserIdFailure, (state, action) => (
+    { ...state, loading: false, error: action.error }
+  )),
 );
 
 export const inscriptionsFeature = createFeature({

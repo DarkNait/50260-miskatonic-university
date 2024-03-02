@@ -6,17 +6,21 @@ import { UsersComponent } from './users.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UsersService } from './users.service';
 import { UserModalComponent } from './components/user-modal/user-modal.component';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { InscriptionsModule } from '../inscriptions/inscriptions.module';
 
 @NgModule({
   declarations: [
     UsersComponent,
     UserFormComponent,
-    UserModalComponent
+    UserModalComponent,
+    UserDetailComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    UsersRoutingModule,    
+    UsersRoutingModule, 
+    InscriptionsModule   
   ],
   exports: [
     UsersComponent
